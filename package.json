@@ -1,0 +1,9 @@
+{
+  "name": "intro-to-react",
+  "version": "1.0.0",
+  "description": "An introduction to the React framework",
+  "main": "index.js",
+  "repository": "git@github.com:newswim/intro-to-react.git",
+  "author": "Dan Minshew",
+  "license": "GPL-2.0"
+}
