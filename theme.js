@@ -12,6 +12,7 @@ const black = '#000'
 const grey1 = '#222'
 const white = '#fff'
 const ltblu = '#dae8ff'
+const tanbg = '#fff6e4'
 
 export default {
   ...theme,
@@ -19,12 +20,12 @@ export default {
     style: tomorrow
   },
   colors: {
-    // text: '#47403c',
-    background: ltblu,
+    background: tanbg,
     codeBackground: white,
     code: black,
-    text: grey1
-    // link: '#ff7115',
+    text: grey1,
+    link: '#ff7115',
+    visitedLink: '#ff7115'
   },
   componenets: {
     li: Li

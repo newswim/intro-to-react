@@ -15,7 +15,7 @@ import HomeView from 'components/HomeView'
 
 export default Split
 
-![](../assets/test.png)
+![](../assets/me.png)
 
 - Self-taught developer going on ~4 years
 - Prior to that, mostly broke college student
@@ -47,7 +47,6 @@ View trends, average salaries, etc.
 - https://benjie.github.io/react-technical-intro
 
 ---
-
 - He makes a fantastic product, `PostGraphile`
 - Check it out if you are interested in using GraphQL along with Postgres
 - It's amazing.
@@ -59,7 +58,48 @@ View trends, average salaries, etc.
 - Who has done any kind of web development?
 - Who has heard of React
 ```
-# What is React?
+
+# Survey time
+
+---
+```notes
+The DOM has long had its detractors
+```
+#### DOM = Document Object Model
+
+<Appear>
+  <blockquote>"The DOM is a mess[!]"</blockquote>
+  <cite>John Resig, creator of jQuery</cite>
+  <blockquote>"The browser is the worst API ever."</blockquote>
+  <cite>Douglas Crockford</cite>
+</Appear>
+
+---
+```notes
+There are plenty of ways to manually change the DOM
+jQuery gives some fairly friendly tools, but anyone who's built
+a large enough application, knows the pains of trying to maintain
+all of the non-reusable code.
+```
+## "Vanilla" web development
+- HTML
+- CSS
+- JavaScript
+- _The DOM_ (good luck.)
+
+---
+```notes
+Prior to React, a lot of frameworks were Template-based
+Templates encourage a poor separation of concerns
+```
+## Other solutions
+- Angular 1
+- Traditional MVC
+
+These are typically very "bulky" (lots of concepts) and opinionated.
+
+---
+# Where does React fit in all of this?
 
 ---
 
@@ -67,19 +107,30 @@ View trends, average salaries, etc.
   It’s true that React is only a UI library.
   It doesn’t prescribe routing, state management, data fetching or even language choice
 </blockquote>
-<cite>– Why is React More Popular Than Angular?, John Hannah</cite>
+<cite>– John Hannah, Why is React More Popular Than Angular?</cite>
 
 ---
 
-## A brief history
+## Brief history
 
-- Introduced in 2013
 - Really a library, but sure, "framework"
-- "Re-thinking best practices"
-- Can be "incrementally adopted"
+- Introduced in 2013
+![](../assets/rethinking.png)
+- A **reaction** to trends
+- Can be **incrementally adopted**
 
 ---
+```notes
+If you watch that talk, you'll hear a lot about..
+Decoupling - the degree to which each program module relies on each of the other modules - wikipedia
+Cohesion - 
+```
+## Key Terms :: Separation of concerns
+- `Coupling` - The degree to which each program module relies on each of the other modules.
+- `Cohesion` - The degree to which elements of a module belong together
+- (wikipedia)
 
+---
 # Back then, web apps were pretty messy..
 
 ---
@@ -110,14 +161,19 @@ var HomeView = Backbone.View.extend({
 ```
 
 ---
-
-## And had some problems...
-
+```notes
 - Manual DOM manipulation performs poorly
 - Code everything twice - once in the template, and once again updating the DOM (jQuery)
 - Component dependencies are opaque
-- Difficult to test
-- Difficult to reason about component interactions
+- Hard to reason about component interactions
+```
+## And had some other problems...
+
+- Updates to DOM were manual and imperative
+- Coded everything twice
+- Unclear module dependency
+- Not easy to reason about
+- Not easy to test
 
 ---
 ```notes
@@ -126,11 +182,11 @@ var HomeView = Backbone.View.extend({
 ```
 
 ## Complaints (continued...)
-- Lots of boilerplate code necessary 
-- Longer development time needed 
+- Lots of boilerplate
+- Longer development time
 - Need to have comprehensive understanding to build large projects 
-- Difficult to organize/structure code 
-- Memory leak issues 
+- Difficult to organize/structure code
+- Memory leak issues
 
 ---
 #### When something goes wrong..
@@ -138,12 +194,28 @@ var HomeView = Backbone.View.extend({
 ## You hit "refresh" over and over.
 
 ---
-
-# (✋ hang on...)
-
-## ES6 Crash Course
+# React attempts to resolve all of these problems.
 
 ---
+### (✋ hang on...)
+
+# ES6 Crash Course
+
+---
+
+- Stands for `E[cma]S[ript]6`
+- Rolled out in 2015
+- Since then, JavaScript has seen yearly updates
+- We often use
+  <a href="https://babeljs.io/">Babel</a>
+  /<a href="https://webpack.js.org/">Webpack</a> for compilation and bundling
+
+---
+```notes
+Class
+- Just syntactic suger for prototype inheritence
+- Has additional things like private methods which we won't cover
+```
 ### ES6 brings much 🔥
 - `let` and `const` (block-scoped variables)
 - `class` == `Object` with a `constructor` function
@@ -152,27 +224,39 @@ var HomeView = Backbone.View.extend({
 - `=>` == `function () {}` with `this` auto-bound
 
 ---
+## A few more keywords
+
+```jsx
+import   // modules (based on CommonJS)
+export   // ...
+...      // rest/spread operator
+```
+
+---
 ```notes
 React uses these new languages features to provide a declarative component structure and API
 ```
 
 ### (✅ Resume presentation)
 
-# React is different.
+# How does React do it?
 
 ---
-
+```notes
+An example component with its own state and updater function
+```
 ```jsx
 const randomNumber = () => Math.floor(Math.random() * 100) + 1
+
 class HomeView extends React.Component {
-  state = { randomNumber: randomNumber() }
-  newNumber = () => this.setState({ randomNumber: randomNumber() })
+  state = { randomNum: randomNumber() }
+  newNumber = () => this.setState({ randomNum: randomNumber() })
   render() {
     return (
       <div>
         <h1>Hello World!</h1>
         <p onClick={this.newNumber}>
-          Random number: {this.state.randomNumber} (click for another)
+          Random number: {this.state.randomNum} (click for another)
         </p>
         <textarea>Notes...</textarea>
       </div>
@@ -195,79 +279,14 @@ Here is the actual component being rendered:
 React "renders" to the DOM by selecting an html node at the "Root" element
 ```
 
-## Render anywhere in the existing DOM
+## You can render anywhere in the existing DOM
 
 ```jsx
 import ReactDOM from 'react-dom'
 
-const root = document.getElementById('root');
+const root = document.getElementById('some-element');
 ReactDOM.render(<HomeView />, root);
 ```
-
----
-```notes
-A common way that people start introducing React to their workflow is to replace
-one piece of UI logic with a React component.
-```
-
-### Incremental adoption is huge
-
-- Build a single React component for your existing website.
-
----
-```notes
-The important concepts we'll go over
-```
-
-## *#important*
-
-- JSX
-- Props
-- setState
-- Lifecycle hooks
-- Unidirectional data flow
-- class vs. functional components
-
-
----
-```notes
-Class
-- Just syntactic suger for prototype inheritence
-- Has additional things like private methods which we won't cover
-
-Arrow
-- Lambda shorthand
-- Auto-binding
-```
-
-### E(cma)S(ript)6 Syntax
-
-```jsx
-import   // modules (based on CommonJS)
-export   // ...
-class    // sugar
-=>       // lambdas
-...      // rest/spread operator
-```
-
----
-
-# JSX
-
-- XML-like
-- "Declarative"
-- Turns into regular JavaScript
-
-```jsx
-<IsThisXML answer="???" />
-```
-
----
-
-## Controlled vs Uncontrolled
-
-- Uncontrolled simply means that React will handle the state updates of the component.
-- Otherwise, it's up to you (eg. "Controlled")
 
 ---
 ```notes
@@ -275,7 +294,7 @@ Let's give a counter example
 (A joke!)
 ```
 
-# A counter example
+# A simple counter example
 
 ---
 ```notes
@@ -304,22 +323,137 @@ class Counter extends Component {
 ```
 
 ---
-
-
-Virtual DOM
-
-[Reconcilliation](https://reactjs.org/docs/reconciliation.html)
+## Differences with HTML
+- `onClick` rather than `onclick`
+- `className` rather than `class`
+- `htmlFor` rather than `for`
 
 ---
+### React Concepts
+- One-way data flow
+- Consistency: the same input / same output
+- Lightweight, reusable components
+- Don't mutate, simply re-render
+- (virtual DOM → super fast)
 
+
+---
+## Unidirectional Data Flow
+
+![](../assets/one-way.svg)
+
+
+---
+```notes
+More concepts we'll quickly cover
+```
+
+## *!important*
+
+- JSX
+- Props and State
+- `setState`
+- Lifecycle hooks
+- class vs. functional components
+
+---
+# JSX
+
+- XML if you squint
+- Declarative
+- Separates concerns rather than technologies
+- Compiles to regular JavaScript
+
+```jsx
+const LoggedOutPage = () => dom('a', {href: '/login'}, 'Please log in!');
+const LoggedOutPage = () => (<a href="/login">Please log in!</a>);
+```
+
+---
+# How does React work?
+
+- https://benjie.github.io/react-technical-intro/#29
+
+---
+```notes
+Stop on Slide 65
+```
+## Summary of Virtual DOM
+- Maintains a "copy" of the DOM
+- Only changes where necessary
+- [Reconcilliation](https://reactjs.org/docs/reconciliation.html)
+
+---
+# Props and State
+
+- https://benjie.github.io/react-technical-intro/#105
+
+
+---
+## Controlled vs Uncontrolled
+
+- Uncontrolled simply means that React will handle the state updates of the component.
+- Otherwise, it's up to you (eg. "Controlled")
+
+
+---
+# Events / controlled components
+
+- https://benjie.github.io/react-technical-intro/#116
+
+
+---
+# Controlled Components
+
+- https://benjie.github.io/react-technical-intro/#125
+
+
+---
+#### Lifecycle hooks
+
+- https://www.google.com/search?q=react+lifecycle&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiXifSsysrdAhUMvFMKHX-2DPcQ_AUIDigB&biw=1577&bih=949#imgrc=7d4_yVZmhiADUM:
+
+---
+```notes
+A common way that people start introducing React to their workflow is to replace
+one piece of UI logic with a React component.
+```
+### Incremental adoption is huge
+
+- Build a single React component for your existing website.
+
+---
+## 💯 Fantastic tooling
+- `create-react-app`
+- Material-UI // Ant Design
+- thousands of packages on NPM
+
+---
+## Things we didn't cover:
+- Styling
+- Event bubbling/pooling
+- Context API
+- Fiber
+- New lifecycle hooks
+
+---
 ## Learning Resources
+- [React Cheatsheet](https://devhints.io/react)
 - [React Tutorial](https://reactjs.org/tutorial/tutorial.html)
 - [React For Beginners](https://reactforbeginners.com/) `💸`
-- [Egghead.io](https://egghead.io) `💸💸`
+- [Egghead.io](https://egghead.io/technologies/react) `💸💸`
 
 ---
-
 ### Further reading
 - [Why is React More Popular Than Angular?](https://javascriptreport.com/why-is-react-more-popular-than-angular/)
+- https://reactjs.org/docs
+- https://btholt.github.io/complete-intro-to-react
+- YouTube
 
 ---
+# Thanks!
+
+If you want to follow me:
+- @newswim on Twitter
+- `newswim` on GitHub
+- Also -> Join the TechMill Slack Group!
