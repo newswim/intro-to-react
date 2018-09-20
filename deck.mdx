@@ -1,0 +1,325 @@
+export { default as theme } from './theme'
+import { Appear } from 'mdx-deck'
+import { Image } from 'mdx-deck'
+import { Split } from 'mdx-deck/layouts'
+import Counter from 'components/Counter'
+import HomeView from 'components/HomeView'
+
+<Image src='../assets/itr_hi.png' size="cover" />
+
+---
+
+## About me
+
+---
+
+export default Split
+
+![](../assets/test.png)
+
+- Self-taught developer going on ~4 years
+- Prior to that, mostly broke college student
+- Interested in a lot of languages/frameworks
+- Loves networking (but not IT)
+- Often tired 😰
+
+---
+```notes
+I looked for images about React's popularity,
+but there hundreds of annecdotes and semi-reliable data out there.
+State of JS is probably the most trusted. (Along with Stack Overflow)
+```
+# State of JS Survey
+- <a href="https://stateofjs.com">stateofjs.com</a>
+- <a href="https://2017.stateofjs.com">2017.stateofjs.com</a>
+- <a href="http://2016.stateofjs.com">2016.stateofjs.com</a>
+
+<blockquote>
+View trends, average salaries, etc.
+</blockquote>
+
+---
+
+## Prior Art
+
+- Parts of these slides were adapted from a talk by Benjie Gillam.
+- https://twitter.com/benjie
+- https://benjie.github.io/react-technical-intro
+
+---
+
+- He makes a fantastic product, `PostGraphile`
+- Check it out if you are interested in using GraphQL along with Postgres
+- It's amazing.
+- https://www.graphile.org/postgraphile
+
+
+---
+```notes
+- Who has done any kind of web development?
+- Who has heard of React
+```
+# What is React?
+
+---
+
+<blockquote>
+  It’s true that React is only a UI library.
+  It doesn’t prescribe routing, state management, data fetching or even language choice
+</blockquote>
+<cite>– Why is React More Popular Than Angular?, John Hannah</cite>
+
+---
+
+## A brief history
+
+- Introduced in 2013
+- Really a library, but sure, "framework"
+- "Re-thinking best practices"
+- Can be "incrementally adopted"
+
+---
+
+# Back then, web apps were pretty messy..
+
+---
+```notes
+- This is BackBone.js
+- calling render() overwrites everything
+- whatever was in <textarea>
+- wanted to only update the random number <span>:
+```
+
+```js
+var HomeView = Backbone.View.extend({
+  template: _.template('<h1>Hello World!</h1>' +
+    '<p>Random number: <span><%- number %></span> (click for another)</p>' +
+    '<textarea>Notes...</textarea>'),
+  events: {
+    'click p': 'render'
+  },
+  randomNumber: function() {
+    return Math.floor(Math.random() * 100) + 1;
+  },
+  render: function() {
+    this.$el.html(this.template({
+      number: this.randomNumber()
+    }));
+  }
+});
+```
+
+---
+
+## And had some problems...
+
+- Manual DOM manipulation performs poorly
+- Code everything twice - once in the template, and once again updating the DOM (jQuery)
+- Component dependencies are opaque
+- Difficult to test
+- Difficult to reason about component interactions
+
+---
+```notes
+- Someone else made a list of more problems
+- This is true for more than just Backbone
+```
+
+## Complaints (continued...)
+- Lots of boilerplate code necessary 
+- Longer development time needed 
+- Need to have comprehensive understanding to build large projects 
+- Difficult to organize/structure code 
+- Memory leak issues 
+
+---
+#### When something goes wrong..
+
+## You hit "refresh" over and over.
+
+---
+
+# (✋ hang on...)
+
+## ES6 Crash Course
+
+---
+### ES6 brings much 🔥
+- `let` and `const` (block-scoped variables)
+- `class` == `Object` with a `constructor` function
+- \+ you don't need `,` between methods
+- \+ `this` depends on how it's called
+- `=>` == `function () {}` with `this` auto-bound
+
+---
+```notes
+React uses these new languages features to provide a declarative component structure and API
+```
+
+### (✅ Resume presentation)
+
+# React is different.
+
+---
+
+```jsx
+const randomNumber = () => Math.floor(Math.random() * 100) + 1
+class HomeView extends React.Component {
+  state = { randomNumber: randomNumber() }
+  newNumber = () => this.setState({ randomNumber: randomNumber() })
+  render() {
+    return (
+      <div>
+        <h1>Hello World!</h1>
+        <p onClick={this.newNumber}>
+          Random number: {this.state.randomNumber} (click for another)
+        </p>
+        <textarea>Notes...</textarea>
+      </div>
+    )
+  }
+}
+```
+
+---
+```notes
+- TextArea is an example of an "uncontrolled" component, which we'll talk about later
+```
+```
+Here is the actual component being rendered:
+```
+<HomeView />
+
+---
+```notes
+React "renders" to the DOM by selecting an html node at the "Root" element
+```
+
+## Render anywhere in the existing DOM
+
+```jsx
+import ReactDOM from 'react-dom'
+
+const root = document.getElementById('root');
+ReactDOM.render(<HomeView />, root);
+```
+
+---
+```notes
+A common way that people start introducing React to their workflow is to replace
+one piece of UI logic with a React component.
+```
+
+### Incremental adoption is huge
+
+- Build a single React component for your existing website.
+
+---
+```notes
+The important concepts we'll go over
+```
+
+## *#important*
+
+- JSX
+- Props
+- setState
+- Lifecycle hooks
+- Unidirectional data flow
+- class vs. functional components
+
+
+---
+```notes
+Class
+- Just syntactic suger for prototype inheritence
+- Has additional things like private methods which we won't cover
+
+Arrow
+- Lambda shorthand
+- Auto-binding
+```
+
+### E(cma)S(ript)6 Syntax
+
+```jsx
+import   // modules (based on CommonJS)
+export   // ...
+class    // sugar
+=>       // lambdas
+...      // rest/spread operator
+```
+
+---
+
+# JSX
+
+- XML-like
+- "Declarative"
+- Turns into regular JavaScript
+
+```jsx
+<IsThisXML answer="???" />
+```
+
+---
+
+## Controlled vs Uncontrolled
+
+- Uncontrolled simply means that React will handle the state updates of the component.
+- Otherwise, it's up to you (eg. "Controlled")
+
+---
+```notes
+Let's give a counter example
+(A joke!)
+```
+
+# A counter example
+
+---
+```notes
+Important parts:
+- State
+- Extends (ES6)
+- Click handlers
+- Event listeners
+- render
+We're going to gloss over what React is doing when you fire an event.
+```
+
+<Counter />
+
+```jsx
+class Counter extends Component {
+  state = {
+    count: 0
+  }
+
+  handleClick = () => this.setState({ count: state.count + 1 })
+
+  render() (<button onClick={this.handleClick}>Higher</button>)
+  }
+}
+```
+
+---
+
+
+Virtual DOM
+
+[Reconcilliation](https://reactjs.org/docs/reconciliation.html)
+
+---
+
+## Learning Resources
+- [React Tutorial](https://reactjs.org/tutorial/tutorial.html)
+- [React For Beginners](https://reactforbeginners.com/) `💸`
+- [Egghead.io](https://egghead.io) `💸💸`
+
+---
+
+### Further reading
+- [Why is React More Popular Than Angular?](https://javascriptreport.com/why-is-react-more-popular-than-angular/)
+
+---

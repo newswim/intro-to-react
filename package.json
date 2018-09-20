@@ -5,5 +5,14 @@
   "main": "index.js",
   "repository": "git@github.com:newswim/intro-to-react.git",
   "author": "Dan Minshew",
-  "license": "GPL-2.0"
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "mdx-deck": "^1.7.4",
+    "mdx-deck-code-surfer": "^0.4.1",
+    "raw-loader": "^0.5.1"
+  },
+  "scripts": {
+    "start": "mdx-deck deck.mdx",
+    "build": "mdx-deck build deck.mdx"
+  }
 }
